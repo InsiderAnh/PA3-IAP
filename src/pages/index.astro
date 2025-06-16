@@ -1,0 +1,211 @@
+---
+---
+
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PA 3 - Menu de restaurante</title>
+    </head>
+
+    <body>
+        <style>
+            body {
+                background: rgb(40, 48, 75);
+            }
+
+            .principal {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 20px;
+                justify-content: space-around;
+            }
+
+            @media (max-width: 768px) {
+                .principal {
+                    flex-direction: column;
+                }
+            }
+
+            .platos {
+                border-radius: 10px;
+                border: solid;
+                color: rgb(164, 250, 178);
+                background: rgb(179, 255, 192);
+                padding: 20px;
+                padding-top: 5px;
+                min-height: 250px;
+                width: 350px;
+            }
+
+            .formulario {
+                border-radius: 10px;
+                border: solid;
+                color: rgb(109, 238, 255);
+                background: rgb(164, 240, 250);
+                padding: 20px;
+                padding-top: 5px;
+                min-height: 250px;
+                width: 350px;
+            }
+
+            .form-group {
+                color: black;
+                display: flex;
+                align-items: center;
+                margin-bottom: 12px;
+                width: 350px;
+            }
+
+            .form-group label {
+                color: black;
+                width: 200px;
+                margin-right: 10px;
+            }
+
+            .form-group input {
+                color: black;
+                flex: 1;
+                border-radius: 8px;
+            }
+
+            h1 {
+                text-align: center;
+                color: white;
+            }
+
+            .subtitulo {
+                color: black;
+                text-align: center;
+            }
+
+            .boton-agregar {
+                color: white;
+                font-weight: bold;
+                font-family: 'Trebuchet MS';
+                border: none;
+                background-color: #2355ec;
+                width: auto;
+                padding-inline: 20px;
+                padding-block: 10px;
+                font-size: 14px;
+                border-radius: 8px;
+                text-align: center;
+                line-height: 1.4;
+            }
+            .boton-agregar:hover {
+                background-color: #1447e6;
+                color: white;
+            }
+
+            #platos {
+                color: black;
+            }
+
+            .selector {
+                border-radius: 7px;
+                width: 215px;
+                padding: 1px;
+                padding-left: 5px;
+            }
+        </style>
+
+        <h1>Menu de restaurante</h1>
+
+        <div class="principal">
+            <div class="formulario">
+                <h2 class="subtitulo">Añadir plato</h2>
+
+                <section class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre">
+                </section>
+
+                <section class="form-group">
+                    <label for="descripcion">Descripción:</label>
+                    <input type="text" id="descripcion" name="descripcion">
+                </section>
+
+                <section class="form-group">
+                    <label for="precio">Precio:</label>
+                    <input type="number" id="precio" name="precio">
+                </section>
+
+                <section class="form-group">
+                    <label for="presentacion">Presentación:</label>
+                    <select id="presentacion" name="presentacion" class="selector">
+                        <option value="Formal">Formal</option>
+                        <option value="Moderno">Moderno</option>
+                        <option value="Infantil">Infantil</option>
+                        <option value="Vegetariano">Vegetariano</option>
+                    </select>
+                </section>
+
+                <section class="form-group">
+                    <label for="categoria">Categoria:</label>
+                    <select id="categoria" name="categoria" class="selector">
+                        <option value="Entrada">Entrada</option>
+                        <option value="Fuerte">Platos fuertes</option>
+                        <option value="Postre">Postres</option>
+                    </select>
+                </section>
+
+                <section class="form-group">
+                    <button type="button" id="boton" class="boton-agregar">Añadir</button>
+                </section>
+            </div>
+
+            <div class="platos">
+                <h2 class="subtitulo">Lista de platos</h2>
+                <div id="platos"></div>
+            </div>
+        </div>
+
+    </body>
+
+    <script>
+
+        type Plato = {
+            nombre: string;
+            descripcion: string;
+            precio: number;
+            presentacion: string;
+            categoria: string;
+        }
+
+        const platos: Plato[] = [];
+
+        document.getElementById("boton")?.addEventListener("click", agregarPlato);
+
+        function agregarPlato() {
+            var nombre = (document.getElementById("nombre") as HTMLInputElement).value;
+            var descripcion = (document.getElementById("descripcion") as HTMLInputElement).value;
+            var precio = parseFloat((document.getElementById("precio") as HTMLInputElement).value);
+            var presentacion = (document.getElementById("presentacion") as HTMLSelectElement).value;
+            var categoria = (document.getElementById("categoria") as HTMLSelectElement).value;
+            if (nombre === "" || descripcion === "" || precio === 0 || presentacion === "" || categoria === "") {
+                alert("Por favor, rellena todos los campos");
+                return;
+            }
+            
+            platos.push({ nombre, descripcion, precio, presentacion, categoria });
+
+            const platosDiv = document.getElementById("platos");
+            if (!platosDiv) return;
+
+            platosDiv.innerHTML = "";
+
+            for (let i = 0; i < platos.length; i++) {
+                const { nombre, precio, categoria, presentacion, descripcion } = platos[i];
+
+                const div = document.createElement("div");
+
+                div.innerHTML = `<h4>${nombre}</h4><p>Precio: ${precio} Categoria: ${categoria} Presentación: ${presentacion} <p>Descripción: ${descripcion}</p>`;
+
+                platosDiv.appendChild(div);
+            }
+        }
+    </script>
+
+</html>
